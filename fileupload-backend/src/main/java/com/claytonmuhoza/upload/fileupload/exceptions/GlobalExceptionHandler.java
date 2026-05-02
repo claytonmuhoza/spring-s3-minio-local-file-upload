@@ -19,7 +19,14 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Map<String, Object>> handleStorageException(StorageException ex) {
         return buildErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Une erreur est survenue lors du stockage du fichier: " + ex.getMessage() );
     }
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Map<String, Object>> handleValidationExceptions(MethodArgumentNotValidException ex) {
 
+        String errorMessage = ex.getBindingResult().getFieldErrors().stream()
+                .map(error -> error.getField() + ": " + error.getDefaultMessage())
+                .collect(Collectors.joining(", "));
+        return buildErrorResponse(HttpStatus.BAD_REQUEST, errorMessage);
+    }
     private ResponseEntity<Map<String, Object>> buildErrorResponse(HttpStatus status, String message) {
         return ResponseEntity.status(status).body(Map.of(
                 "timestamp", LocalDateTime.now(),
