@@ -6,7 +6,7 @@ A containerized Spring Boot microservice to upload files to MinIO/S3, complete w
 * [Docker](https://docs.docker.com/get-docker/)
 * [Docker Compose](https://docs.docker.com/compose/install/)
 
-## 📂 Structure
+## Structure
 * **`frontend/`** : The Angular user interface.
 * **`backend/`** : The Spring Boot REST API.
 * **`docker-compose.yml`** : Orchestrates the frontend, backend, and MinIO storage.
