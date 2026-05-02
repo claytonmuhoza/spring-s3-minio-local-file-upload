@@ -19,7 +19,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(StorageException.class)
     public ResponseEntity<Map<String, Object>> handleStorageException(StorageException ex) {
-        return buildErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Une erreur est survenue lors du stockage du fichier: " + ex.getMessage() );
+        return buildErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred while saving the file: " + ex.getMessage() );
     }
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, Object>> handleValidationExceptions(MethodArgumentNotValidException ex) {

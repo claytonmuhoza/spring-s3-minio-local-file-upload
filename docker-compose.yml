@@ -37,30 +37,44 @@ services:
     ]
     networks:
       - file-storage
-
+  file-upload-postgres:
+    image: postgres:16-alpine
+    container_name: postgres-db
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-upload_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-upload_pass}
+      POSTGRES_DB: ${POSTGRES_DB:-upload_db}
+    ports:
+      - "5437:5432"
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    networks:
+      - file-storage
   file-upload-backend:
-    build:
-      context: ./fileupload-backend
-      dockerfile: Dockerfile
+    image: ghcr.io/claytonmuhoza/spring-s3-upload-backend:main
     container_name: spring-backend
     depends_on:
       minio-init:
         condition: service_completed_successfully
+      file-upload-postgres:
+        condition: service_started
     environment:
       - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE:-S3}
       - MINIO_ENDPOINT=http://minio:9000
       - MINIO_ACCESS_KEY=${MINIO_ROOT_USER}
       - MINIO_SECRET_KEY=${MINIO_ROOT_PASSWORD}
       - MINIO_BUCKET_NAME=${MINIO_BUCKET_NAME}
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/${POSTGRES_DB:-upload_db}
+      - SPRING_DATASOURCE_USERNAME=${POSTGRES_USER:-upload_user}
+      - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD:-upload_pass}
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
     ports:
       - "8085:8080"
     networks:
       - file-storage
 
   file-upload-frontend:
-    build:
-      context: ./fileupload-frontend
-      dockerfile: Dockerfile
+    image: ghcr.io/ton-nom-utilisateur-github/spring-s3-upload-frontend:main
     container_name: angular-frontend
     depends_on:
       - file-upload-backend
