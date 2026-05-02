@@ -1,0 +1,75 @@
+<div class="file-manager-container">
+  <h2>File Manager</h2>
+
+  <!-- Reactive Form -->
+  <form [formGroup]="uploadForm" (ngSubmit)="onSubmit()" class="upload-form">
+
+    <div class="form-field">
+      <label for="projectId">Folder (Optional)</label>
+      <input
+        pInputText
+        id="projectId"
+        type="text"
+        formControlName="projectId"
+        placeholder="e.g., PROJ-2026-XYZ"
+      />
+    </div>
+
+    <div class="form-field">
+      <label for="fileInput">File (PDF, PNG, JPG, TIFF, ZIP)</label>
+      <input
+        id="fileInput"
+        type="file"
+        accept=".pdf,.png,.jpg,.tif,.tiff,.zip"
+        (change)="onFileSelected($event)"
+      />
+    </div>
+
+    <p-button
+      type="submit"
+      label="Upload"
+      icon="pi pi-upload"
+      [disabled]="!selectedFile() || isUploading()"
+    />
+  </form>
+
+  <!-- Loading Feedback -->
+  @if (isUploading()) {
+    <div class="loading-state">
+      <p-progressSpinner ariaLabel="Uploading" />
+      <span>Uploading file, please wait...</span>
+    </div>
+  }
+
+  <!-- Error Handling -->
+  @if (errorMessage()) {
+    <p-message severity="error" [text]="errorMessage()!" />
+  }
+
+  <!-- Result with Quick Actions (Download / Delete) -->
+  @if (uploadedResult(); as result) {
+    <div class="result-card">
+      <h3>Upload Successful!</h3>
+      <p><strong>File ID:</strong> {{ result.fileId }}</p>
+      <p><strong>Project ID:</strong> {{ result.projectId }}</p>
+      <p><strong>URI:</strong> {{ result.fileUri }}</p>
+
+      <div class="actions">
+        <p-button
+          label="View / Download"
+          icon="pi pi-download"
+          severity="info"
+          (onClick)="onDownload(result.fileUri)"
+        />
+
+        <p-button
+          label="Delete"
+          icon="pi pi-trash"
+          severity="danger"
+          [loading]="isDeleting()"
+          (onClick)="onDelete(result.fileUri)"
+        />
+      </div>
+    </div>
+  }
+</div>

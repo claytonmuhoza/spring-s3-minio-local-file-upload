@@ -1,0 +1,42 @@
+<div class="upload-container">
+  <p-toast></p-toast> <!-- Pour les notifications -->
+
+  <div class="card">
+    <h2>Ingestion de données spatiales</h2>
+    <p class="subtitle">Sélectionnez un fichier GeoTIFF ou ZIP (.shp)</p>
+    <div class="metadata-form">
+      <p-floatLabel>
+        <input pInputText id="projectId" [(ngModel)]="projectId" />
+        <label for="projectId">ID du Projet (Optionnel)</label>
+      </p-floatLabel>
+
+      <p-floatLabel>
+        <p-inputNumber id="refYear" [(ngModel)]="referenceYear" [useGrouping]="false" />
+        <label for="refYear">Année de référence (Optionnel)</label>
+      </p-floatLabel>
+    </div>
+
+    <!-- Composant d'Upload PrimeNG -->
+    <p-fileUpload
+      name="file"
+      [customUpload]="true"
+      (uploadHandler)="onUpload($event)"
+      [multiple]="false"
+      accept=".tif,.tiff,.zip,.pdf"
+      maxFileSize="100000000"
+      chooseLabel="Choisir un fichier"
+      uploadLabel="Ingérer la donnée"
+      cancelLabel="Annuler">
+
+      <ng-template #content>
+        @if (uploadedFileUri()){
+          <div class="success-box">
+            <i class="pi pi-check-circle" style="color: green; font-size: 1.5rem"></i>
+            <span>Fichier stocké avec succès à l'URI : <strong>{{ uploadedFileUri() }}</strong></span>
+          </div>
+        }
+
+      </ng-template>
+    </p-fileUpload>
+  </div>
+</div>
