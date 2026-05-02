@@ -74,7 +74,7 @@ services:
       - file-storage
 
   file-upload-frontend:
-    image: ghcr.io/ton-nom-utilisateur-github/spring-s3-upload-frontend:main
+    image: ghcr.io/claytonmuhoza/spring-s3-upload-frontend:main
     container_name: angular-frontend
     depends_on:
       - file-upload-backend
@@ -86,6 +86,7 @@ services:
 
 volumes:
   minio-data:
+  pg-data:
 
 networks:
   file-storage:
