@@ -34,6 +34,6 @@ docker-compose --env-file <env-file> up -d --build
 
 ## Access the App
 Once the containers are running, open your browser:
-* **UI (Angular):** http://localhost:4200
-* **API (Spring Boot):** http://localhost:8080
+* **UI (Angular):** http://localhost:8090
+* **API (Spring Boot):** http://localhost:8085
 * **Storage Console (MinIO):** http://localhost:9001
