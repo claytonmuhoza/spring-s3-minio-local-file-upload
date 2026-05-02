@@ -2,7 +2,7 @@
 
 A containerized Spring Boot microservice to upload files to MinIO/S3, complete with an Angular UI for quick testing.
 
-## 📋 Prerequisites
+## Prerequisites
 * [Docker](https://docs.docker.com/get-docker/)
 * [Docker Compose](https://docs.docker.com/compose/install/)
 
@@ -12,7 +12,7 @@ A containerized Spring Boot microservice to upload files to MinIO/S3, complete w
 * **`docker-compose.yml`** : Orchestrates the frontend, backend, and MinIO storage.
 * **`.env.example`** : Template for required environment variables.
 
-## 🚀 Quick Start
+## Quick Start
 
 **1. Clone the repository**
 ```bash
@@ -32,7 +32,7 @@ cp env-example.env .env
 docker-compose --env-file <env-file> up -d --build
 ```
 
-## 🌐 Access the App
+## Access the App
 Once the containers are running, open your browser:
 * **UI (Angular):** http://localhost:4200
 * **API (Spring Boot):** http://localhost:8080
